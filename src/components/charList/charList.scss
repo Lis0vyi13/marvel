@@ -1,0 +1,66 @@
+@import '../../styles/mixins.scss';
+
+.char-list {
+  position: relative;
+  display: grid;
+  font-family: 'Roboto';
+  margin-bottom: 50px;
+  min-height: 400px;
+
+  @include mq(1px) {
+    grid-template-columns: repeat(1, 1fr);
+    width: 100%;
+    gap: 40px;
+  }
+
+  @include mq(600px) {
+    width: 80%;
+    gap: 30px;
+  }
+  @include mq(850px) {
+    width: 100%;
+  }
+  @include mq(1000px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  @include mq(1315px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  &__item {
+    height: 368px;
+    background-color: #131313;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    position: relative;
+    justify-self: center;
+    width: 100%;
+    transform: translateY(0);
+
+    &:hover {
+      box-shadow: -1px 1px 13px 6px rgba(240, 20, 30, 0.5);
+    }
+  }
+
+  &__img {
+    height: 200px;
+    & img {
+      width: 100%;
+      -o-object-fit: cover;
+      object-fit: cover;
+      height: 200px;
+    }
+  }
+
+  &__name h2 {
+    position: relative;
+    padding: 15px;
+    font-size: 26px;
+    font-weight: bold;
+    z-index: 2;
+  }
+}
+
+.active-card {
+  box-shadow: -1px 1px 13px 6px rgba(240, 20, 30, 0.5);
+  transform: translateY(-20px);
+}

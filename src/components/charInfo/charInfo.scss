@@ -1,0 +1,94 @@
+@import '../../styles/mixins.scss';
+@import '../../styles/variables.scss';
+.char-info {
+  height: -webkit-fit-content;
+  height: -moz-fit-content;
+  height: fit-content;
+  background-color: rgba($color: red, $alpha: 0.2);
+
+  @include mq(600px) {
+    width: 80%;
+  }
+  @include mq(850px) {
+    width: 100%;
+  }
+
+  &__content {
+    padding: 25px;
+  }
+
+  &__character {
+    gap: 25px;
+    @include mq(1px) {
+      display: flex;
+      flex-direction: column;
+    }
+    @include mq(500px) {
+      display: grid;
+      width: 100%;
+      grid-template-columns: auto 1fr;
+    }
+  }
+  &__img {
+    width: 190px;
+    height: 190px;
+    max-width: 190px;
+    max-height: 190px;
+  }
+  &__text {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 10px;
+  }
+
+  &__title {
+    font-size: 22px;
+    text-transform: uppercase;
+    max-width: 100%;
+  }
+
+  &__description {
+    grid-column: span 2;
+    font-size: 17px;
+  }
+  &__buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    @include mq(1px) {
+      width: 100%;
+    }
+
+    @include mq(1315px) {
+      width: -webkit-max-content;
+      width: -moz-max-content;
+      width: max-content;
+    }
+  }
+  &__btn {
+    font-size: 16px;
+    width: 100%;
+  }
+  &__comics {
+    margin-top: 25px;
+
+    &-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 10px;
+      font-size: 17px;
+      padding: 0;
+      &-item {
+        background-color: #131313;
+        padding: 5px;
+        font-size: 16px;
+        transition: all 0.3s ease;
+        &:hover {
+          box-shadow: -1px 1px 13px 1px rgba(240, 20, 30, 0.5);
+        }
+      }
+    }
+  }
+}

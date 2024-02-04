@@ -1,0 +1,66 @@
+@import '../../styles/mixins.scss';
+@import '../../styles/variables.scss';
+
+.header {
+  &__content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 27.5px 0;
+    gap: 20px;
+    @include mq(1px) {
+      flex-direction: column;
+    }
+    @include mq(500px) {
+      flex-direction: row;
+    }
+  }
+
+  &__list {
+    display: flex;
+    gap: 17.5px;
+    &-link {
+      transition: all 0.3s ease;
+    }
+    &-item {
+      padding: 5px;
+      cursor: pointer;
+      &:hover a {
+        color: #888888;
+      }
+    }
+  }
+  &__social-medias {
+    display: flex;
+    gap: 10px;
+  }
+  &__social-media {
+    position: relative;
+    cursor: pointer;
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.3s ease;
+    &[data-social='Telegram'] {
+      background-color: #32a7d9;
+      & div img {
+        margin-left: -1px;
+      }
+      &:hover {
+        background-color: #185771;
+      }
+    }
+    &[data-social='Gmail'] {
+      background-color: rgba(240, 20, 30, 0.4);
+      & div img {
+        margin-left: -0.3px;
+      }
+      &:hover {
+        background-color: rgba(104, 22, 26, 0.626);
+      }
+    }
+  }
+}

@@ -1,0 +1,28 @@
+@import '../../styles/mixins.scss';
+.main {
+  &__list {
+    margin-top: 70px;
+    margin-bottom: 80px;
+    &-container {
+      overflow: unset;
+    }
+    &-content {
+      display: grid;
+      gap: 25px;
+
+      @include mq(1px) {
+        display: flex;
+        flex-direction: column-reverse;
+        align-items: center;
+      }
+      @include mq(850px) {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        align-items: unset;
+      }
+      @include mq(1315px) {
+        grid-template-columns: 62% 36%;
+      }
+    }
+  }
+}

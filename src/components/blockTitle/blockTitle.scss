@@ -1,0 +1,21 @@
+@import '../../styles/variables.scss';
+
+.block-name {
+  margin-bottom: 55px;
+}
+.block-title {
+  position: relative;
+  text-transform: uppercase;
+  display: inline-block;
+  &::after {
+    content: '';
+    position: absolute;
+    top: -20px;
+    left: 50%;
+    width: 10px;
+    height: 10px;
+    transform: translateX(-50%);
+    border-radius: 50%;
+    background-color: $red;
+  }
+}
