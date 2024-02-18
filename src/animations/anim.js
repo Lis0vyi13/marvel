@@ -45,11 +45,19 @@ export const cardAnim = {
   }),
 };
 
-export const s = {
-  hidden: { opacity: 0, translateX: '-50%' },
+export const comicsHeaderAnim = {
+  hidden: { opacity: 0, y: 100 },
   visible: (custom) => ({
     opacity: 1,
-    transition: { duration: 2.5, delay: custom * 0.2 },
-    translateX: '-50%',
+    y: 0,
+    transition: { duration: 0.5, delay: custom * 0.2 },
+  }),
+};
+
+export const fadeIn = {
+  hidden: { opacity: 0 },
+  visible: (custom) => ({
+    opacity: 1,
+    transition: { duration: 1, delay: custom * 0.2 },
   }),
 };

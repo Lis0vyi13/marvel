@@ -5,11 +5,14 @@
   height: -moz-fit-content;
   height: fit-content;
   background-color: rgba($color: red, $alpha: 0.2);
-
+  @include mq(1px) {
+    width: 100%;
+  }
   @include mq(600px) {
     width: 80%;
   }
   @include mq(850px) {
+    margin-bottom: 0;
     width: 100%;
   }
 

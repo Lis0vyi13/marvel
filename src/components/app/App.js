@@ -1,51 +1,26 @@
 import './app.scss';
-
-import { Component } from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
 import AppHeader from '../appHeader/AppHeader';
-import AppMain from '../appMain/AppMain';
-import RandomChar from '../randomChar/RandomChar';
-import CharList from '../charList/CharList';
-import CharInfo from '../charInfo/CharInfo';
-import AppMainList from '../appMainList/AppMainList';
-import Marvel from '../../services/Marvel';
+import CharactersPage from '../pages/CharactersPage';
+import ComicsPage from '../pages/ComicsPage';
+import Page404 from '../page404/Page404';
+import ComicInfo from '../comicInfo/ComicInfo';
 
-class App extends Component {
-  state = {
-    activeChar: null,
-    totalCharAmount: null,
-  };
-  marvel = new Marvel();
-  componentDidMount = async () => {
-    await this.getTotalCharAmount();
-  };
-
-  getActiveChar = (id) => {
-    this.setState({ activeChar: id });
-  };
-
-  getTotalCharAmount = async () => {
-    const totalChar = await this.marvel.getAllCharacters(1);
-    const total = totalChar.data.total;
-    this.setState({ totalCharAmount: total });
-  };
-
-  render() {
-    return (
+const App = () => {
+  return (
+    <Router>
       <div className='App'>
         <AppHeader />
-        <AppMain />
-        <RandomChar title='Random character' />
-        <AppMainList>
-          <CharList
-            total={this.state.totalCharAmount}
-            getActiveChar={this.getActiveChar}
-          />
-          <CharInfo activeChar={this.state.activeChar} />
-        </AppMainList>
+        <Routes>
+          <Route path='marvel' element={<CharactersPage />} />
+          <Route path='comics' element={<ComicsPage />} />
+          <Route path='comics/:comicId' element={<ComicInfo />} />
+          <Route path='*' element={<Page404 />} />
+        </Routes>
       </div>
-    );
-  }
-}
+    </Router>
+  );
+};
 
 export default App;

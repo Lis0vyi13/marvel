@@ -58,6 +58,9 @@ ul[class],
 ol[class] {
   list-style: none;
 }
+ul {
+  padding: 0;
+}
 
 a:not([class]) {
   -webkit-text-decoration-skip: ink;

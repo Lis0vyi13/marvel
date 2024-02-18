@@ -2,6 +2,10 @@
 @import '../../styles/variables.scss';
 
 .header {
+  &__active-link {
+    color: $red;
+    font-weight: bold;
+  }
   &__content {
     display: flex;
     justify-content: space-between;
@@ -23,8 +27,10 @@
       transition: all 0.3s ease;
     }
     &-item {
-      padding: 5px;
       cursor: pointer;
+      & a {
+        padding: 5px;
+      }
       &:hover a {
         color: #888888;
       }

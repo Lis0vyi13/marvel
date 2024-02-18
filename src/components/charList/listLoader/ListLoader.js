@@ -1,8 +1,8 @@
-import './charListLoader.scss';
+import './listLoader.scss';
 
-const CharListLoader = () => {
+const ListLoader = () => {
   return (
-    <div className='loadingio-spinner-ellipsis-6iszfz84awk char-list-loader'>
+    <div className='loadingio-spinner-ellipsis-6iszfz84awk list-loader'>
       <div className='ldio-xlbd2dzlxer'>
         <div></div>
         <div></div>
@@ -14,4 +14,4 @@ const CharListLoader = () => {
   );
 };
 
-export default CharListLoader;
+export default ListLoader;

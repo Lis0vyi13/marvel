@@ -1,0 +1,58 @@
+@import '../../styles/mixins.scss';
+
+.comics-item {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  &:hover .comic-img {
+    box-shadow: -1px 1px 28px 1px rgba(240, 20, 30, 0.5);
+  }
+}
+.comic-img {
+  height: 346px;
+  display: flex;
+  align-self: center;
+  justify-self: center;
+  transition: all 0.3s ease;
+
+  @include mq(1px) {
+    aspect-ratio: 1;
+  }
+
+  @include mq(620px) {
+    min-width: 260px;
+  }
+  @include mq(870px) {
+    min-width: unset;
+    width: 100%;
+  }
+}
+.comic-title {
+  font-size: 16px;
+  font-weight: bold;
+  padding-top: 10px;
+  @include mq(1px) {
+    text-align: center;
+  }
+
+  @include mq(620px) {
+    text-align: left;
+  }
+  &:hover {
+    text-decoration: underline;
+  }
+}
+.comic-price {
+  font-size: 14px;
+  padding-top: 5px;
+  @include mq(1px) {
+    text-align: center;
+  }
+
+  @include mq(620px) {
+    text-align: left;
+  }
+  &:hover {
+    text-decoration: underline;
+  }
+}

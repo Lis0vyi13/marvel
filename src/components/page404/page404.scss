@@ -1,0 +1,76 @@
+@import '../../styles/mixins.scss';
+
+.page404 {
+  width: 100%;
+  &-img {
+    position: absolute;
+    top: -130px;
+    @include mq(1px) {
+      display: none;
+    }
+    @include mq(800px) {
+      right: -70px;
+      display: block;
+      scale: 0.5;
+    }
+    @include mq(850px) {
+      scale: 0.65;
+    }
+
+    @include mq(1200px) {
+      right: 0;
+      scale: 0.8;
+    }
+  }
+  &-container {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    min-height: 650px;
+  }
+  &-text {
+    display: flex;
+    flex-direction: column;
+    margin-top: 150px;
+    @include mq(1px) {
+      text-align: center;
+      justify-self: center;
+      align-self: center;
+      max-width: 433px;
+    }
+    @include mq(800px) {
+      text-align: left;
+      justify-self: start;
+      align-self: start;
+    }
+    @include mq(950px) {
+      max-width: 533px;
+    }
+  }
+  &-title {
+    @include mq(1px) {
+      font-size: 40px;
+    }
+    @include mq(950px) {
+      font-size: 46px;
+    }
+  }
+  &-subtitle {
+    margin-top: 10px;
+    @include mq(1px) {
+      font-size: 24px;
+    }
+    @include mq(950px) {
+      font-size: 28px;
+    }
+  }
+  &-description {
+    font-weight: normal;
+    @include mq(1px) {
+      font-size: 18px;
+    }
+    @include mq(950px) {
+      font-size: 20px;
+    }
+  }
+}

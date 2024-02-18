@@ -19,7 +19,7 @@ class Marvel {
 
   getCharacter = async (id) => {
     const response = await fetch(
-      `https://gateway.marvel.com:443/v1/public/characters/${id}?apikey=333d74a765f835dd4bccc16126e65eaa`,
+      `https://gateway.marvel.com:443/v1/public/characters/${id}?apikey=${this.key}`,
     );
     if (!response.ok) {
       throw new Error('Failed to fetch character');
@@ -32,6 +32,25 @@ class Marvel {
 
     return char.map(this._transformCharacter);
   };
+
+  getComics = async (offset = 2) => {
+    const response = await fetch(
+      `https://gateway.marvel.com:443/v1/public/comics?offset=${offset}&apikey=${this.key}`,
+    );
+    const comics = await response.json();
+    return comics.data.results;
+  };
+
+  getComic = async (id) => {
+    const data = await fetch(
+      `https://gateway.marvel.com:443/v1/public/comics/${id}?apikey=${this.key}`,
+    );
+
+    const response = await data.json();
+    const comic = response.data.results;
+    return comic.map(this._transformComics)[0];
+  };
+
   _transformCharacter = (char) => {
     return {
       id: char.id,
@@ -43,6 +62,21 @@ class Marvel {
       homepage: char.urls[0].url,
       wiki: char.urls[1].url,
       comics: char.comics.items.slice(0, 9),
+    };
+  };
+  _transformComics = (comics) => {
+    return {
+      id: comics.id,
+      title: comics.title,
+      description: comics.description || 'There is no description',
+      pageCount: comics.pageCount
+        ? `${comics.pageCount} p.`
+        : 'No information about the number of pages',
+      thumbnail: comics.thumbnail.path + '.' + comics.thumbnail.extension,
+      language: comics.textObjects[0]?.language || 'en-us',
+      price: comics.prices[0].price
+        ? `${comics.prices[0].price}$`
+        : 'Not available',
     };
   };
 }

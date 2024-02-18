@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import Marvel from '../../services/Marvel';
 import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
@@ -8,7 +8,7 @@ import { cardAnim } from '../../animations/anim';
 import './charInfo.scss';
 
 const CharInfoContent = ({ state }) => {
-  if (!state?.char) {
+  if (!state) {
     return (
       <div className='char-info__content'>
         <div className='char-info__character'>
@@ -50,8 +50,7 @@ const CharInfoContent = ({ state }) => {
     );
   }
 
-  const { name, thumbnail, homepage, wiki, description, comics, id } =
-    state.char[0];
+  const { name, thumbnail, homepage, wiki, description, comics, id } = state[0];
 
   const comicsList =
     comics.length > 0
@@ -89,38 +88,46 @@ const CharInfoContent = ({ state }) => {
   );
 };
 
-class CharInfo extends Component {
-  state = {};
-  marvel = new Marvel();
-  componentDidUpdate = async (prevProps) => {
-    if (
-      this.props.activeChar === prevProps.activeChar ||
-      !this.props.activeChar
-    )
-      return;
-    await this.getCharacter();
-  };
-  getCharacter = async () => {
-    const { activeChar } = this.props;
-    if (!activeChar) return;
-    const char = await this.marvel.getCharInfo(activeChar);
-    this.setState({ char });
-  };
-  render() {
-    return (
-      <motion.section
-        initial='hidden'
-        whileInView='visible'
-        viewport={{ once: true }}
-        id='char-info'
-        className='char-info'
-        variants={cardAnim}
-        custom={4}
-      >
-        <CharInfoContent state={this.state} />
-      </motion.section>
-    );
-  }
-}
+const CharInfo = (props) => {
+  const [char, setChar] = useState(null);
+  const charInfoBlock = useRef(null);
+  useEffect(() => {
+    props.getCharInfoBlock(charInfoBlock);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+  useEffect(() => {
+    const marvel = new Marvel();
+
+    const getCharacter = async () => {
+      const { activeChar } = props;
+      if (!activeChar) return;
+
+      try {
+        const charData = await marvel.getCharInfo(activeChar);
+        setChar(charData);
+      } catch (error) {
+        console.error('Error fetching character information:', error);
+      }
+    };
+
+    getCharacter();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [props.activeChar]);
+
+  return (
+    <motion.section
+      initial='hidden'
+      whileInView='visible'
+      viewport={{ once: true }}
+      ref={charInfoBlock}
+      id='char-info'
+      className='char-info'
+      variants={cardAnim}
+      custom={4}
+    >
+      <CharInfoContent state={char} />
+    </motion.section>
+  );
+};
 
 export default CharInfo;

@@ -1,4 +1,6 @@
-import { Component } from 'react';
+import './charList.scss';
+
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { animateScroll as scroll } from 'react-scroll';
 
@@ -7,9 +9,7 @@ import 'react-loading-skeleton/dist/skeleton.css';
 
 import Marvel from '../../services/Marvel';
 import { cardAnim } from '../../animations/anim';
-import CharListLoader from './charListLoader/CharListLoader';
-
-import './charList.scss';
+import ListLoader from './listLoader/ListLoader';
 
 const Card = ({ img, name, onCardFocus, onCardClick }) => {
   return (
@@ -50,27 +50,46 @@ const CardSkeleton = () => {
   return <>{skeletonCards}</>;
 };
 
-class CharList extends Component {
-  state = {
-    chars: [],
-    loading: false,
-    offset: null,
-    loadingExtraChar: false,
-  };
+const CharList = (props) => {
+  const [chars, setChars] = useState([]);
+  const [loading, isLoading] = useState(false);
+  const [offset, setOffset] = useState(null);
+  const [loadingExtraChar, isLoadingExtraChar] = useState(false);
+  const [firstLoading, isFirstLoadingDone] = useState(false);
+  const [activeCard, setActiveCard] = useState(null);
+  const marvel = new Marvel();
+  const { getActiveChar, charInfoBlock, total } = props;
 
-  marvel = new Marvel();
+  useEffect(() => {
+    setOffset(marvel._baseOffset);
+    window.addEventListener('scroll', handleScroll);
 
-  componentDidMount = async () => {
-    await this.setState({ offset: this.marvel._baseOffset });
-    await this.getCharacters();
-    window.addEventListener('scroll', this.calculateDistance);
-  };
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
-  componentWillUnmount() {
-    window.removeEventListener('scroll', this.calculateDistance);
-  }
+  useEffect(() => {
+    if (offset && !firstLoading) {
+      getCharacters();
+      isFirstLoadingDone(true);
+    }
+    if (firstLoading && loadingExtraChar) {
+      const getList = async () => {
+        const chars = await marvel.getCharactersList(offset);
+        return chars;
+      };
 
-  calculateDistance = async () => {
+      getList().then((newChars) => {
+        setChars((prevChars) => [...prevChars, ...newChars]);
+        isLoadingExtraChar(false);
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [offset]);
+
+  const calculateDistance = async () => {
     const documentHeight = Math.max(
       document.body.scrollHeight,
       document.documentElement.scrollHeight,
@@ -84,81 +103,76 @@ class CharList extends Component {
     const scrolledPixels = window.scrollY;
 
     if (
-      !this.state.loadingExtraChar &&
+      !loadingExtraChar &&
       scrolledPixels >= documentHeight - windowHeight - 50
     ) {
-      this.setState(
-        (prevState) => ({
-          offset: prevState.offset + 9,
-          loadingExtraChar: true,
-        }),
-        async () => {
-          const chars = await this.marvel.getCharactersList(this.state.offset);
-          this.setState((prevState) => ({
-            chars: [...prevState.chars, ...chars],
-            loadingExtraChar: false,
-          }));
-        },
-      );
+      await setOffset((offset) => offset + 9);
+      isLoadingExtraChar(true);
     }
   };
 
-  getCharacters = async () => {
-    this.setState({ loading: true, hasError: false });
+  let timeoutId;
+  const handleScroll = () => {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => {
+      calculateDistance();
+    }, 20);
+  };
+
+  const getCharacters = async () => {
+    isLoading(true);
     try {
-      const chars = await this.marvel.getCharactersList(this.state.offset);
-      this.setState({ chars });
+      const chars = await marvel.getCharactersList(offset);
+      setChars(chars);
     } catch (error) {
-      this.setState({ loading: false, hasError: true });
+      isLoading(false);
       throw new Error(error);
     } finally {
-      this.setState({ loading: false });
+      isLoading(false);
     }
   };
+  useEffect(() => {
+    activeCard?.classList.add('active-card');
+  }, [activeCard]);
 
-  onCardFocus = (e, id) => {
+  const onCardFocus = (e, id) => {
     const card = e.target.closest('.char-list__item');
-    document.querySelector('.active-card')?.classList.remove('active-card');
-    card.classList.add('active-card');
+    activeCard?.classList.remove('active-card');
 
-    this.props.getActiveChar(id);
+    setActiveCard(card);
+    getActiveChar(id);
   };
-
-  onCardClick = () => {
-    const charInfo = document.querySelector('#char-info');
+  const onCardClick = () => {
+    const charInfo = charInfoBlock.current;
     scroll.scrollTo(charInfo.offsetTop - 50, {
       duration: 400,
       smooth: 'easeInOutQuad',
     });
   };
 
-  render() {
-    const { chars, loading, offset } = this.state;
-    const { total } = this.props;
-    const cards = chars.map((char) => (
-      <Card
-        name={char.name}
-        onCardFocus={(e) => this.onCardFocus(e, char.id)}
-        key={char.id}
-        img={char.thumbnail}
-        onCardClick={this.onCardClick}
-      />
-    ));
+  const cards = chars.map((char) => (
+    <Card
+      name={char.name}
+      onCardFocus={(e) => onCardFocus(e, char.id)}
+      key={char.id}
+      img={char.thumbnail}
+      onCardClick={onCardClick}
+    />
+  ));
 
-    return (
-      <motion.section
-        initial='hidden'
-        whileInView='visible'
-        viewport={{ once: true }}
-        className='char-list'
-        variants={cardAnim}
-        custom={2}
-      >
-        {loading ? <CardSkeleton /> : cards}
-        {total > offset && <CharListLoader />}
-      </motion.section>
-    );
-  }
-}
+  return (
+    <motion.section
+      initial='hidden'
+      whileInView='visible'
+      viewport={{ once: true }}
+      className='char-list'
+      variants={cardAnim}
+      custom={2}
+    >
+      {loading ? <CardSkeleton /> : cards}
+      {total > offset && <ListLoader />}
+    </motion.section>
+  );
+};
 
 export default CharList;
