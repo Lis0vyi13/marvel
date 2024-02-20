@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/marvel/static/css/main.018272a6.css",
-    "main.js": "/marvel/static/js/main.64953c18.js",
+    "main.js": "/marvel/static/js/main.71019a9b.js",
     "static/media/Spider-man.png": "/marvel/static/media/Spider-man.340a442c875a3eec7c81.png",
     "static/media/marvel-image404.png": "/marvel/static/media/marvel-image404.6e7b8901f5c71143a470.png",
     "static/media/spiddy.png": "/marvel/static/media/spiddy.d38e0fe771fb1a3d0dd4.png",
@@ -13,10 +13,10 @@
     "index.html": "/marvel/index.html",
     "static/media/gmail.svg": "/marvel/static/media/gmail.cf6e9da6207069eaa596237538127bcb.svg",
     "main.018272a6.css.map": "/marvel/static/css/main.018272a6.css.map",
-    "main.64953c18.js.map": "/marvel/static/js/main.64953c18.js.map"
+    "main.71019a9b.js.map": "/marvel/static/js/main.71019a9b.js.map"
   },
   "entrypoints": [
     "static/css/main.018272a6.css",
-    "static/js/main.64953c18.js"
+    "static/js/main.71019a9b.js"
   ]
 }
