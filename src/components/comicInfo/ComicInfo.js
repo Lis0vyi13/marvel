@@ -1,11 +1,12 @@
 import './comicInfo.scss';
 
-import { useState, useEffect } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { useState, useEffect, useRef } from 'react';
+import { Link, useParams, useNavigate } from 'react-router-dom';
 
 import Marvel from '../../services/Marvel';
 
 import Loader from '../loader/Loader';
+import Error from '../error/Error';
 
 const marvel = new Marvel();
 
@@ -50,50 +51,69 @@ const BackArrowSvg = () => {
     </svg>
   );
 };
+
+const ComicInfoContent = ({ comic }) => {
+  const navigate = useNavigate();
+
+  return (
+    <>
+      <div className='comic-info__image'>
+        <img className='comic-info__img' src={comic.thumbnail} alt='' />
+      </div>
+      <div className='comic-info__content'>
+        <h2 className='comic-info__title'>{comic.title}</h2>
+        <h4 className='comic-info__description'>{comic.description}</h4>
+        <h6 className='comic-info__pages'>{comic.pageCount}</h6>
+        <h6 className='comic-info__language'>Language: {comic.language}</h6>
+        <h3 className='comic-info__price'>{comic.price}</h3>
+      </div>
+      <Link className='comic-info__back' onClick={() => navigate(-1)}>
+        <BackArrowSvg />
+        Back to all
+      </Link>
+    </>
+  );
+};
 const ComicInfo = () => {
   const [comic, setComic] = useState(null);
+  const [doesntExist, setDoesntExist] = useState(false);
+  const [loading, isLoading] = useState(false);
+  const comicInfoBlock = useRef();
   const { comicId } = useParams();
+
   useEffect(() => {
     const getComic = async () => {
       try {
+        isLoading(true);
         const newComic = await marvel.getComic(comicId);
         setComic(newComic);
+        setDoesntExist(false);
       } catch (error) {
+        setDoesntExist(true);
         console.error('Error fetching character information:', error);
+      } finally {
+        isLoading(false);
       }
     };
 
     getComic();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  if (!comic) {
-    return <Loader />;
-  }
-  const { thumbnail, description, language, price, pageCount, title } = comic;
+
+  const error = !loading && doesntExist ? <Error /> : null;
+  const loader = loading && <Loader />;
+  const content = !loading && comic ? <ComicInfoContent comic={comic} /> : null;
+  if (content)
+    comicInfoBlock.current.style.backgroundColor = 'rgba(255, 0, 0, 0.2)';
 
   return (
     <section className='comic-info'>
       <div className='container comic-info-container'>
-        {!comic ? (
-          <Loader />
-        ) : (
-          <div className='comic-info__block'>
-            <div className='comic-info__image'>
-              <img className='comic-info__img' src={thumbnail} alt='' />
-            </div>
-            <div className='comic-info__content'>
-              <h2 className='comic-info__title'>{title}</h2>
-              <h4 className='comic-info__description'>{description}</h4>
-              <h6 className='comic-info__pages'>{pageCount}</h6>
-              <h6 className='comic-info__language'>Language: {language}</h6>
-              <h3 className='comic-info__price'>{price}</h3>
-            </div>
-            <Link className='comic-info__back' to={'/comics'}>
-              <BackArrowSvg />
-              Back to all
-            </Link>
-          </div>
-        )}
+        <div ref={comicInfoBlock} className='comic-info__block'>
+          {content}
+          {error}
+          {loader}
+        </div>
       </div>
     </section>
   );

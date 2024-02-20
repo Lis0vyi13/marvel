@@ -1,12 +1,29 @@
 import { useState, useEffect, useRef } from 'react';
+import { Link } from 'react-router-dom';
+
 import { motion } from 'framer-motion';
-import Marvel from '../../services/Marvel';
 import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
+
+import Marvel from '../../services/Marvel';
 
 import { cardAnim } from '../../animations/anim';
 
 import './charInfo.scss';
 
+const ComicsList = ({ comics }) => {
+  return comics.length > 0
+    ? comics.map((item, i) => {
+        const url = item.resourceURI;
+        const parts = url.split('/');
+        const comicId = parts[parts.length - 1];
+        return (
+          <Link key={i} to={`/comics/${comicId}`}>
+            <li className='char-info__comics-list-item'>{item.name}</li>
+          </Link>
+        );
+      })
+    : 'Comics not found';
+};
 const CharInfoContent = ({ state }) => {
   if (!state) {
     return (
@@ -52,17 +69,6 @@ const CharInfoContent = ({ state }) => {
 
   const { name, thumbnail, homepage, wiki, description, comics, id } = state[0];
 
-  const comicsList =
-    comics.length > 0
-      ? comics.map((item, i) => {
-          return (
-            <a key={i} href={item.resourceURI}>
-              <li className='char-info__comics-list-item'>{item.name}</li>
-            </a>
-          );
-        })
-      : 'Comics not found';
-
   return (
     <div className='char-info__content'>
       <div key={id} className='char-info__character'>
@@ -82,7 +88,9 @@ const CharInfoContent = ({ state }) => {
       </div>
       <div className='char-info__comics'>
         <h4 className='char-info__comics-title'>Comics:</h4>
-        <ul className='char-info__comics-list'>{comicsList}</ul>
+        <ul className='char-info__comics-list'>
+          {<ComicsList comics={comics} />}
+        </ul>
       </div>
     </div>
   );

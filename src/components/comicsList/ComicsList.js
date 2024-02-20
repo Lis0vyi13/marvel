@@ -44,7 +44,6 @@ const ComicsList = () => {
           document.documentElement.offsetHeight - 50
         ) {
           setOffset((offset) => offset + 20);
-          console.log(1);
         }
       }, 20);
     };

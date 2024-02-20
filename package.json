@@ -2,7 +2,7 @@
   "name": "marvel",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://lis0vyi13.github.io/marvel/",
+  "homepage": "https://lis0vyi13.github.io/marvel",
   "dependencies": {
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
@@ -48,3 +48,4 @@
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11"
   }
 }
+
