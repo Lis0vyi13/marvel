@@ -13,8 +13,8 @@ const App = () => {
       <div className='App'>
         <AppHeader />
         <Routes>
-          <Route path='marvel' element={<CharactersPage />} />
-          <Route path='comics' element={<ComicsPage />} />
+          <Route path='marvel/' element={<CharactersPage />} />
+          <Route path='comics/' element={<ComicsPage />} />
           <Route path='comics/:comicId' element={<ComicInfo />} />
           <Route path='*' element={<Page404 />} />
         </Routes>

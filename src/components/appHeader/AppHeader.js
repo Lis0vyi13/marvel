@@ -39,7 +39,7 @@ const AppHeader = () => {
       <div className='container'>
         <div className='header__content'>
           <div className='header__logo'>
-            <Link to='marvel'>
+            <Link to='marvel/'>
               <img src={marvelLogo} width={130} alt='Marvel logo' />
             </Link>
           </div>
@@ -47,7 +47,7 @@ const AppHeader = () => {
             <ul className='header__list'>
               <li className='header__list-item'>
                 <NavLink
-                  to='marvel'
+                  to='marvel/'
                   className={({ isActive }) =>
                     `header__list-link ${isActive ? 'header__active-link' : ''}`
                   }
@@ -58,7 +58,7 @@ const AppHeader = () => {
               </li>
               <li className='header__list-item'>
                 <NavLink
-                  to='comics'
+                  to='comics/'
                   className={({ isActive }) =>
                     `header__list-link ${isActive ? 'header__active-link' : ''}`
                   }
