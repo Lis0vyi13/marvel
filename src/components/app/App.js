@@ -1,26 +1,31 @@
 import './app.scss';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { lazy, Suspense } from 'react';
+import { HashRouter as Router, Routes, Route } from 'react-router-dom';
 
 import AppHeader from '../appHeader/AppHeader';
-import CharactersPage from '../pages/CharactersPage';
-import ComicsPage from '../pages/ComicsPage';
-import Page404 from '../page404/Page404';
-import ComicInfo from '../comicInfo/ComicInfo';
+
+import Loader from '../loader/Loader';
+
+const CharactersPage = lazy(() => import('../pages/CharactersPage'));
+const ComicsPage = lazy(() => import('../pages/ComicsPage'));
+const ComicInfo = lazy(() => import('../comicInfo/ComicInfo'));
+const Page404 = lazy(() => import('../page404/Page404'));
 
 const App = () => {
   return (
     <Router>
       <div className='App'>
         <AppHeader />
-        <Routes>
-          <Route path='marvel' element={<CharactersPage />} />
-          <Route path='comics' element={<ComicsPage />} />
-          <Route path='comics/:comicId' element={<ComicInfo />} />
-          <Route path='*' element={<Page404 />} />
-        </Routes>
+        <Suspense fallback={<Loader />}>
+          <Routes>
+            <Route path='marvel' element={<CharactersPage />} />
+            <Route path='comics' element={<ComicsPage />} />
+            <Route path='comics/:comicId' element={<ComicInfo />} />
+            <Route path='*' element={<Page404 />} />
+          </Routes>
+        </Suspense>
       </div>
     </Router>
   );
 };
-
 export default App;
