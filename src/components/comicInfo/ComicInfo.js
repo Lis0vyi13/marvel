@@ -3,10 +3,14 @@ import './comicInfo.scss';
 import { useState, useEffect, useRef } from 'react';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 
+import { motion } from 'framer-motion';
+
 import Marvel from '../../services/Marvel';
 
 import Loader from '../loader/Loader';
 import Error from '../error/Error';
+
+import { cardAnim } from '../../animations/anim';
 
 const marvel = new Marvel();
 
@@ -107,7 +111,14 @@ const ComicInfo = () => {
     comicInfoBlock.current.style.backgroundColor = 'rgba(255, 0, 0, 0.2)';
 
   return (
-    <section className='comic-info'>
+    <motion.section
+      initial='hidden'
+      whileInView='visible'
+      viewport={{ once: true }}
+      variants={cardAnim}
+      custom={2}
+      className='comic-info'
+    >
       <div className='container comic-info-container'>
         <div ref={comicInfoBlock} className='comic-info__block'>
           {content}
@@ -115,7 +126,7 @@ const ComicInfo = () => {
           {loader}
         </div>
       </div>
-    </section>
+    </motion.section>
   );
 };
 

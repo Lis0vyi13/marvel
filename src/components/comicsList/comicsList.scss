@@ -2,24 +2,28 @@
 
 .comics-list {
   position: relative;
-  display: grid;
   margin-top: 50px;
   justify-content: center;
   margin-bottom: 120px;
-  gap: 65px;
   min-height: 200px;
-  @include mq(1px) {
-    grid-template-columns: repeat(1, 1fr);
+  &__content {
+    display: grid;
+    gap: 65px;
+
+    @include mq(1px) {
+      grid-template-columns: repeat(1, 1fr);
+    }
+    @include mq(620px) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    @include mq(870px) {
+      grid-template-columns: repeat(3, 1fr);
+    }
+    @include mq(1200px) {
+      grid-template-columns: repeat(4, 1fr);
+    }
   }
-  @include mq(620px) {
-    grid-template-columns: repeat(2, 1fr);
-  }
-  @include mq(870px) {
-    grid-template-columns: repeat(3, 1fr);
-  }
-  @include mq(1200px) {
-    grid-template-columns: repeat(4, 1fr);
-  }
+
   & .loader {
     top: 200px;
   }

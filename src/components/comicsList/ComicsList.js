@@ -61,6 +61,23 @@ const ComicsList = () => {
     });
   };
 
+  const content =
+    comics.length > 0 ? (
+      <motion.section
+        initial='hidden'
+        whileInView='visible'
+        viewport={{ once: true }}
+        custom={0.5}
+        variants={comicsHeaderAnim}
+        className='comics-list__content'
+      >
+        {comicsList}
+        <ListLoader />
+      </motion.section>
+    ) : (
+      <p>No comics found.</p>
+    );
+
   return (
     <motion.div
       initial='hidden'
@@ -70,20 +87,7 @@ const ComicsList = () => {
       variants={comicsHeaderAnim}
       className='comics-list'
     >
-      {isLoading ? (
-        <Loader />
-      ) : (
-        <>
-          {comics.length > 0 ? (
-            <>
-              {comicsList}
-              <ListLoader />
-            </>
-          ) : (
-            <p>No comics found.</p> // Відображаємо повідомлення, якщо коміксів немає
-          )}
-        </>
-      )}
+      {isLoading ? <Loader /> : content}
     </motion.div>
   );
 };
