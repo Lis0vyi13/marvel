@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-
+import { Helmet } from 'react-helmet';
 import ComicsHeader from '../comicsHeader/ComicsHeader';
 import ComicsList from '../comicsList/ComicsList';
 
@@ -7,6 +7,10 @@ import { comicsHeaderAnim } from '../../animations/anim';
 const ComicsPage = () => {
   return (
     <>
+      <Helmet>
+        <title>Comics</title>
+        <meta name='description' content='Comics Page' />
+      </Helmet>
       <section className='comics'>
         <div className='container comics-container'>
           <motion.header

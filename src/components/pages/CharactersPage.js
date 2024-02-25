@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { Helmet } from 'react-helmet';
 
 import AppMain from '../appMain/AppMain';
 import RandomChar from '../randomChar/RandomChar';
@@ -44,6 +45,10 @@ const CharactersPage = () => {
 
   return (
     <>
+      <Helmet>
+        <title>Characters</title>
+        <meta name='description' content='Characters Page' />
+      </Helmet>
       <AppMain randomCharBlock={randomCharBlock} />
       <RandomChar
         setRandomChar={handleRandomCharBlock}

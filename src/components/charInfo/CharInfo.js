@@ -6,6 +6,7 @@ import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
 
 import Marvel from '../../services/Marvel';
 
+import SearchForm from '../searchForm/SearchForm';
 import { cardAnim } from '../../animations/anim';
 
 import './charInfo.scss';
@@ -134,6 +135,7 @@ const CharInfo = (props) => {
       custom={4}
     >
       <CharInfoContent state={char} />
+      <SearchForm />
     </motion.section>
   );
 };

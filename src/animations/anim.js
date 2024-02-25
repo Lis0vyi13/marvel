@@ -7,7 +7,7 @@ export const headerAnim = {
 };
 
 export const textAnim = {
-  hidden: { opacity: 0, scale: 0.95 },
+  hidden: { opacity: 0, scale: 0.99 },
   visible: (custom) => ({
     opacity: 1,
     scale: 1,
@@ -37,7 +37,7 @@ export const dividerAnim = {
 };
 
 export const cardAnim = {
-  hidden: { opacity: 0, y: 200 },
+  hidden: { opacity: 0, y: 100 },
   visible: (custom) => ({
     opacity: 1,
     y: 0,

@@ -1,6 +1,7 @@
 class Marvel {
   key = '333d74a765f835dd4bccc16126e65eaa';
   _baseOffset = 1253;
+
   getAllCharacters = async (offset) => {
     const response = await fetch(
       `https://gateway.marvel.com:443/v1/public/characters?limit=9&offset=${offset}&apikey=${this.key}`,
@@ -25,6 +26,19 @@ class Marvel {
       throw new Error('Failed to fetch character');
     }
     return await response.json();
+  };
+  getCharInfoByName = async (name) => {
+    const response = await fetch(
+      `https://gateway.marvel.com:443/v1/public/characters?name=${name}&apikey=${this.key}`,
+    );
+    if (!response.ok) {
+      throw new Error('Failed to fetch character');
+    }
+    const char = await response.json();
+    if (char.data.results.length === 0)
+      throw new Error('Failed to fetch character');
+
+    return char.data.results[0];
   };
   getCharInfo = async (id) => {
     const response = await this.getCharacter(id);
@@ -51,13 +65,15 @@ class Marvel {
     return comic.map(this._transformComics)[0];
   };
 
-  _transformCharacter = (char) => {
+  _transformCharacter = (char, slice = true) => {
     return {
       id: char.id,
       name: char.name,
-      description: char.description
-        ? `${char.description.slice(0, 210)}...`
-        : 'There is no description for this character',
+      description: slice
+        ? char.description
+          ? `${char.description.slice(0, 210)}...`
+          : 'There is no description for this character'
+        : char.description,
       thumbnail: char.thumbnail.path + '.' + char.thumbnail.extension,
       homepage: char.urls[0].url,
       wiki: char.urls[1].url,
